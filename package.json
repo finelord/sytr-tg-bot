@@ -1,15 +1,14 @@
 {
-  "name": "sytr",
-  "version": "1.0.0",
-  "description": "",
+  "name": "sytr-tg-bot",
+  "version": "0.0.1",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "finelord",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
-    "node-telegram-bot-api": "^0.30.0"
+    "axios": "0.18.0",
+    "node-telegram-bot-api": "0.30.0"
   }
 }
