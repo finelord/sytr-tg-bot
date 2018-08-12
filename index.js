@@ -25,10 +25,12 @@ bot.on('message', (msg) => {
     console.log(url);
 
     axios.get(url).then(response => {
-      const start = response.data.indexOf('<title>');
-      const end = response.data.indexOf('</title>');
+      const startToken = '<meta property="description" content="';
+      const endToken = '">';
+      const start = response.data.indexOf(startToken) + startToken.length;
+      const end = response.data.indexOf(endToken, start);
       if (~start && ~end) {
-        const title = response.data.slice(start + 7, end);
+        const title = response.data.slice(start, end);
         console.log(title);
 
         const primary = title.split(',')[0]
@@ -36,6 +38,8 @@ bot.on('message', (msg) => {
           .trim();
         const secondary = (title.split(',')[1] || '')
           .replace('a song by', '')
+          .replace('an album by', '')
+          .replace('Category: Artist', '')
           .replace('on Spotify', '')
           .trim();
         console.log(primary);
