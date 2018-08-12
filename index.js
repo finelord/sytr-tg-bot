@@ -42,10 +42,15 @@ bot.on('message', (msg) => {
         console.log(secondary);
 
         if (primary) {
-          const query = encodeURI(`${primary} ${secondary}`);
+          const query = (`${primary} ${secondary}`).trim();
+          const queryEncoded = encodeURI(query);
           bot.sendMessage(
             chatId,
-            `https://music.yandex.ru/search?text=${query}`
+            `Search *${query}* on:\n[Yandex Music](https://music.yandex.ru/search?text=${queryEncoded}) | [Deezer](https://www.deezer.com/search/${queryEncoded}) | [Youtube](https://www.youtube.com/results?search_query=${queryEncoded}) | [Google](https://www.google.com/search?q=${queryEncoded})`,
+            {
+              parse_mode: 'Markdown',
+              disable_web_page_preview: true
+            }
           );
         }
       }
