@@ -25,39 +25,37 @@ bot.on('message', (msg) => {
     console.log(url);
 
     axios.get(url).then(response => {
-      const startToken = '<meta property="description" content="';
-      const endToken = '">';
-      const start = response.data.indexOf(startToken) + startToken.length;
-      const end = response.data.indexOf(endToken, start);
-      if (~start && ~end) {
-        const title = response.data.slice(start, end);
-        console.log(title);
+      const startTitleToken = '<meta property="og:title" content="';
+      const endTitleToken = '">';
+      const title = getValue(response.data, startTitleToken, endTitleToken);
+      console.log(title);
 
-        const primary = title.split(',')[0]
-          .replace('on Spotify', '')
-          .trim();
-        const secondary = (title.split(',')[1] || '')
-          .replace('a song by', '')
-          .replace('an album by', '')
-          .replace('Category: Artist', '')
-          .replace('on Spotify', '')
-          .trim();
-        console.log(primary);
-        console.log(secondary);
+      const startArtistToken = '<h1>More by ';
+      const endArtistToken = '</h1>';
+      const artist = getValue(response.data, startArtistToken, endArtistToken);
+      console.log(artist);
 
-        if (primary) {
-          const query = (`${primary} ${secondary}`).trim();
-          const queryEncoded = encodeURI(query);
-          bot.sendMessage(
-            chatId,
-            `Search *${query}* on:\n[Yandex Music](https://music.yandex.ru/search?text=${queryEncoded}) | [Deezer](https://www.deezer.com/search/${queryEncoded}) | [Youtube](https://www.youtube.com/results?search_query=${queryEncoded}) | [Google](https://www.google.com/search?q=${queryEncoded})`,
-            {
-              parse_mode: 'Markdown',
-              disable_web_page_preview: true
-            }
-          );
-        }
+      if (title || artist) {
+        const query = (`${title} ${artist}`).trim();
+        const queryEncoded = encodeURI(query);
+        bot.sendMessage(
+          chatId,
+          `Search *${query}* on:\n[Yandex Music](https://music.yandex.ru/search?text=${queryEncoded}) | [Deezer](https://www.deezer.com/search/${queryEncoded}) | [Youtube](https://www.youtube.com/results?search_query=${queryEncoded}) | [Google](https://www.google.com/search?q=${queryEncoded})`,
+          {
+            parse_mode: 'Markdown',
+            disable_web_page_preview: true
+          }
+        );
       }
     });
   }
 });
+
+function getValue(data, startToken, endToken) {
+  const start = data.indexOf(startToken) + startToken.length;
+  const end = data.indexOf(endToken, start);
+  if (~start && ~end) {
+    return data.slice(start, end);
+  }
+  return '';
+}
