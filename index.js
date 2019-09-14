@@ -26,7 +26,7 @@ bot.on('message', (msg) => {
 
     axios.get(url).then(response => {
       const startTitleToken = '<meta property="og:title" content="';
-      const endTitleToken = '">';
+      const endTitleToken = '" />';
       const title = getValue(response.data, startTitleToken, endTitleToken);
       console.log(title);
 
