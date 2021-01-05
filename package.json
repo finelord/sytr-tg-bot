@@ -8,7 +8,7 @@
   "author": "finelord",
   "license": "MIT",
   "dependencies": {
-    "axios": "0.18.1",
+    "axios": "0.21.1",
     "node-telegram-bot-api": "0.30.0"
   }
 }
